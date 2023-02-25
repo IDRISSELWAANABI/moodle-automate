@@ -3,7 +3,7 @@ import re
 from .constantes import *
 import os
 import json
-import time
+import getpass
 
 
 class Methodes :
@@ -22,17 +22,22 @@ class Methodes :
         """ cette fonction permet de vérifier si le programme se lance pour la première fois
         si c'est le cas elle crée un fichier qui contient le mot de passe 
         et le nom de l'utilisateur et les cours qu'il a vus sur moodle"""
-        if not os.getenv("user_name") :
+        if  not os.path.isfile(login_path):
             self.user_name = input("user_name : ")
-            self.password = input("mot de passe : ")
-            os.environ["user_name"] = self.user_name
-            os.environ["password"] = self.password
+            self.password = getpass.getpass("mot de passe : ")
+            with open(login_path,"w") as f :
+                f.write(self.user_name+"\n")
+                f.write(self.password)
+                f.close()
+            os.system(f"attrib +h {login_path}")
             self.telecharger = input("vous voulez télécharger les anciens cours ? [y/n] : ").lower()
             while(self.telecharger not in {"y" , "n"}):
                 self.telecharger = input("veuillez répondre par 'y' ou 'n' s'il vous plaît : ").lower()
         else : 
-            self.user_name = os.getenv("user_name")
-            self.password = os.getenv("password")
+            with open(login_path,"r") as f :
+                self.user_name = f.readline()
+                self.password = f.readline()
+                f.close()
             if self.dictionnaire_first :
                 print("il semble que vous avez supprimé le fichier data.json \n")
                 self.telecharger = input("vous voulez télécharger les anciens cours ? [y/n] : ").lower()
