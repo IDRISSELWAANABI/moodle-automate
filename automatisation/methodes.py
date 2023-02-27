@@ -91,20 +91,15 @@ class Methodes :
         ftype = self.type_file(element , name)
         nom_sb = re.sub(r"\n[a-zA-Z]+|\\*\"*\/*\:*\**\?*\<*\>*\|*","",name)                   # pour supprimer "\nFichier" qui existe à la fin du nom
         # parfois le fichier n'est pas un pdf il peut être une image par exemple
-        if element.locator("css=.activityicon").get_attribute("src") == "http://m.inpt.ac.ma/theme/image.php/clean/core/1614806513/f/jpeg-24" :
-            element.locator("css=.instancename").click()
-            self.page.screenshot(path=f"{module_name}/{ftype}/{nom_sb}.jpg")
-            self.page.goto(link)
-        else :
-            with self.page.expect_download() as download_info:
-                # initialiser le téléchargement
-                    element.locator("css=.instancename").click()
-                    # attendre que le téléchargement commence
-                    download = download_info.value
-                    # attendre la fin du processus du téléchargement
-                    path = download.path()
-                    # sauvegarder le fichier installer
-                    download.save_as(f"{module_name}/{ftype}/{nom_sb}.pdf")
+        with self.page.expect_download() as download_info:
+            # initialiser le téléchargement
+                element.locator("css=.instancename").click()
+                # attendre que le téléchargement commence
+                download = download_info.value
+                # attendre la fin du processus du téléchargement
+                path = download.path()
+                # sauvegarder le fichier installer
+                download.save_as(f"{module_name}/{ftype}/{nom_sb}.pdf")
 
 
     def Telecharger_dossier(self , element , name , module_name , link) :
@@ -139,13 +134,14 @@ class Methodes :
             self.cours_consultés[module_name] = []
         for i in range (n):
             cours_id = elements.nth(i).get_attribute("id")
+            est_pdf = elements.nth(i).locator(".activityicon").get_attribute("src")
             if not self.deja_consulté(cours_id , module_name) :
                 if self.telecharger=="y" :
                     name = (elements.nth(i)).locator("css=.instancename").inner_text()
                     class_ = elements.nth(i).get_attribute("class")
-                    if class_.__contains__("modtype_resource") :                      # si l'élément est un fichier
+                    if class_.__contains__("modtype_resource") and est_pdf == pdf :
                         self.Telecharger_fichier(elements.nth(i), name , module_name , link)
-                    else :                                                            # sinon 
+                    elif  class_.__contains__("modtype_folder") :                                                      
                         self.Telecharger_dossier(elements.nth(i), name , module_name , link)
                 self.cours_consultés[module_name].append(cours_id)
     

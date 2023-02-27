@@ -9,6 +9,4 @@ moodle = "http://m.inpt.ac.ma/login/index.php"
 profile = "http://m.inpt.ac.ma/user/profile.php?id=&showallcourses=1"
 homedir = os.path.expanduser("~")
 login_path = os.path.join(homedir, ".login.txt")
-
-
-         
+pdf = "http://m.inpt.ac.ma/theme/image.php/clean/core/1614806513/f/pdf-24"
