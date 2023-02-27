@@ -69,7 +69,7 @@ class Methodes :
     def lien_valide(self , lien):
         to_replace = {"user":"course","1860&course=":"" , "&showallcourses=1":""}
         for clé,valeur in to_replace.items() : 
-            lien = lien.replace(clé , valeur)
+            lien = re.sub(clé , valeur , lien)
         return lien
 
 
