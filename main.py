@@ -5,7 +5,7 @@ from automatisation.methodes import Methodes
 m = Methodes()
 m.est_premiere_fois()
 with sync_playwright() as playwright:
-    browser = playwright.firefox.launch(headless=False)
+    browser = playwright.firefox.launch(headless=True)
     # initialiser la page et se connecte au profile sur moodle 
     m.load_and_login(browser)
     # obtenir le lien de chaque module

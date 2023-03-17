@@ -1,9 +1,9 @@
-from playwright.sync_api import sync_playwright
 import re
 from .constantes import *
 import os
 import json
-import getpass
+from winotify import Notification, audio
+from .LoginPage import tkinter_page
 
 
 class Methodes :
@@ -14,6 +14,15 @@ class Methodes :
          self.user_name = None
          self.password = None
          self.telecharger = "y"
+         self.First = False
+          
+        # instancier l'objet toast pour afficher les notifications
+         self.Toast = Notification(app_id = "Moodle",
+            title = "Attention",
+            msg = "un cours a été ajouté sur moodle",
+            duration = "long",
+            icon = r"C:\Users\ayoub\Desktop\moodle-automate\automatisation\Mobile-M-Icon-1-corners.png")
+         self.Toast.set_audio(audio.Mail, loop = False)
 
 
 
@@ -23,16 +32,15 @@ class Methodes :
         si c'est le cas elle crée un fichier qui contient le mot de passe 
         et le nom de l'utilisateur et les cours qu'il a vus sur moodle"""
         if  not os.path.isfile(login_path):
-            self.user_name = input("user_name : ")
-            self.password = getpass.getpass("mot de passe : ")
+            tkinter_page0 = tkinter_page()
+            self.user_name , self.password = tkinter_page0.user_name , tkinter_page0.password
+            self.telecharger = tkinter_page0.telecharger
             with open(login_path,"w") as f :
                 f.write(self.user_name+"\n")
                 f.write(self.password)
                 f.close()
             os.system(f"attrib +h {login_path}")
-            self.telecharger = input("vous voulez télécharger les anciens cours ? [y/n] : ").lower()
-            while(self.telecharger not in {"y" , "n"}):
-                self.telecharger = input("veuillez répondre par 'y' ou 'n' s'il vous plaît : ").lower()
+            self.First = True
         else : 
             with open(login_path,"r") as f :
                 self.user_name = f.readline()
@@ -98,8 +106,12 @@ class Methodes :
                 download = download_info.value
                 # attendre la fin du processus du téléchargement
                 path = download.path()
-                # sauvegarder le fichier installer
-                download.save_as(f"{module_name}/{ftype}/{nom_sb}.pdf")
+                # sauvegarder le fichier installé
+                download.save_as(f"{homedir}\Desktop\Moodle\{module_name}\{ftype}\{nom_sb}.pdf")
+                if not self.First :
+                    self.Toast.add_actions(label = "appuyez ici" , launch= f"{homedir}\Desktop\Moodle\{module_name}\{ftype}\{nom_sb}.pdf" )
+                    self.Toast.show()
+
 
 
     def Telecharger_dossier(self , element , name , module_name , link) :
@@ -118,8 +130,11 @@ class Methodes :
             # attendre la fin du processus du téléchargement
             path = download.path()
             # sauvegarder le fichier installer
-            download.save_as(f"{module_name}/{nom_sb}.zip")
+            download.save_as(f"{homedir}\Desktop\Moodle\{module_name}\{nom_sb}.zip")
             self.page.goto(link)
+            if not self.First :
+                self.Toast.add_actions(label = "appuyez ici" , launch= f"{homedir}\Desktop\Moodle\{module_name}\{nom_sb}.zip")
+                self.Toast.show()
 
 
 
