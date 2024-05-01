@@ -6,9 +6,13 @@ This project automates tasks related to Moodle using Selenium. It includes funct
 
 ## Requirements
 
-- Python 3.x
-- Selenium (version X.X.X)
-- Other dependencies (list them here if any)
+- Python 3
+- Selenium 
+- requests
+- bs4
+- tkinter
+- winotify
+- regex
 
 ## Installation
 
