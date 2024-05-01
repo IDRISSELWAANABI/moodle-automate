@@ -20,3 +20,15 @@ This project automates tasks related to Moodle using Selenium. It includes funct
 
    ```bash
    git clone "https://github.com/IDRISSELWAANABI/moodle-automate.git"
+2. Navigate to the project directory
+3. Install the required packages
+
+   ```bash
+   pip install -r requirements.txt
+## Usage
+Run the main script:
+
+````bash
+
+   python main.py
+
