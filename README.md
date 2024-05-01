@@ -35,5 +35,4 @@ Run the main script:
 
 
 
-![]("C:\Users\Idriss\Pictures\Screenshots\Screenshot 2024-05-01 130048.png")
 
