@@ -1,18 +1,16 @@
 
-from playwright.sync_api import sync_playwright
+from selenium import webdriver
 from automatisation.methodes import Methodes
 
 m = Methodes()
 m.est_premiere_fois()
-with sync_playwright() as playwright:
-    browser = playwright.firefox.launch(headless=True)
-    # initialiser la page et se connecte au profile sur moodle 
-    m.load_and_login(browser)
-    # obtenir le lien de chaque module
-    liens = m.modules_liens_liste() 
-    for lien in liens :
-        # obtenir la liste des éléments du module correspondant au lien choisi
-        # et télécharger ceux qui viennent d'être ajoutés
-        m.elements_liste(lien)
-    browser.close()
+options = webdriver.FirefoxOptions()
+options.headless = True
+browser = webdriver.Firefox(options=options)
+m.load_and_login(browser)
+liens = m.modules_liens_liste()
+for lien in liens:
+    m.elements_liste(lien)
+browser.quit()
 m.finir_leprogramme()
+
