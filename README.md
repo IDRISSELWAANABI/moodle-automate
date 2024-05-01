@@ -15,4 +15,4 @@ This project automates tasks related to Moodle using Selenium. It includes funct
 1. Clone the repository:
 
    ```bash
-   git clone [https://github.com/IDRISSELWAANABI/moodle-automate.git]
+   git clone "https://github.com/IDRISSELWAANABI/moodle-automate.git"
