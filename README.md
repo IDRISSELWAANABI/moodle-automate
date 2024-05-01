@@ -28,7 +28,12 @@ This project automates tasks related to Moodle using Selenium. It includes funct
 ## Usage
 Run the main script:
 
-````bash
+   ```bash
 
    python main.py
+```
+
+
+
+![]("C:\Users\Idriss\Pictures\Screenshots\Screenshot 2024-05-01 130048.png")
 
